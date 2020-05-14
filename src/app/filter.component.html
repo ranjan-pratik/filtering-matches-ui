@@ -1,0 +1,92 @@
+<p-panel header="Add Filters" [toggleable]="true" [style]="{'margin-bottom':'20px'}" [collapsed]="false">
+    Content
+    <div class="ui-g">
+        <div class="ui-g-6">
+            <div class="ui-g-12">
+                <div class="ui-g-4">
+                    Age Range [ {{ageRangeValues[0] + ' - ' + ageRangeValues[1]}} ]
+                </div>
+                <div class="ui-g-8">
+                    <p-slider [(ngModel)]="ageRangeValues" [range]="true" [min]="0" [max]="100" ></p-slider>
+                </div>
+            </div>
+            <div class="ui-g-12">
+                <div class="ui-g-4">
+                    Height Range [ {{heightRangeValues[0] + ' - ' + heightRangeValues[1]}} ]
+                </div>
+                <div class="ui-g-8">
+                    <p-slider [(ngModel)]="heightRangeValues" [range]="true" [min]="120" [max]="200"></p-slider>
+                </div>
+            </div>
+            <div class="ui-g-12">
+                <div class="ui-g-4">
+                    Compatibility Score [ {{compatibilityRangeValues[0] + ' - ' + compatibilityRangeValues[1]}} ]
+                </div>
+                <div class="ui-g-8">
+                    <p-slider [(ngModel)]="compatibilityRangeValues" [step]=".01" [range]="true" [min]="0" [max]="1"></p-slider>
+                </div>
+            </div>
+        </div>
+        <div class="ui-g-6">
+            <div class="ui-g-12">
+                <button pButton type="button" label="New" icon="fa-plus" style="margin-right:10px"></button>
+            </div>
+            <div class="ui-g-12">
+                <button pButton type="button" label="Open" icon="fa-folder-open"></button>
+            </div>
+        </div>
+    </div>
+</p-panel>
+<p-table [columns]="matchCols" [value]="matches" dataKey="display_name" [paginator]="true" rows="10">
+    <ng-template pTemplate="header" let-columns class="ui-g-4">
+        <tr>
+            <th style="width: 3em"></th>
+            <th *ngFor="let col of columns">
+                {{col.header}}
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns" class="ui-g-4">
+        <tr>
+            <td>
+                <a href="#" [pRowToggler]="rowData">
+                    <i [ngClass]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></i>
+                </a>
+            </td>
+            <td *ngFor="let col of columns">
+                {{rowData[col.field]}}
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="rowexpansion" let-rowData let-columns="columns">
+        <tr>
+            <td [attr.colspan]="columns.length + 1">
+                <div class="ui-g ui-fluid" style="font-size:16px;padding:20px">
+                    <div class="ui-g-12 ui-md-3 shadow-box ui-shadow-1" style="text-align:center">
+                        <img [attr.alt]="rowData.main_photo" src="{{rowData.main_photo}}">
+                    </div>
+                    <div class="ui-g-12 ui-md-9">
+                        <div class="ui-g">
+                            <div class="ui-g-12">
+                                <b>Name:</b> {{rowData.display_name}}
+                            </div>
+                            <div class="ui-g-12">
+                                <b>Age:</b> {{rowData.age}}
+                            </div>
+                            <div class="ui-g-12">
+                                <b>Job:</b> {{rowData.job_title}}
+                            </div>
+                            <div class="ui-g-12">
+                                <b>Religion:</b> {{rowData.religion}}
+                            </div>
+                            <div class="ui-g-12">
+                                <b>Is Favourite:</b> {{rowData.favourite}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>
+
