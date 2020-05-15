@@ -1,18 +1,12 @@
-import {Component, Injectable, OnInit} from '@angular/core';
-import { Match } from './domain/match';
-import { MatchService } from './services/matchservice';
+import {Component, OnInit} from '@angular/core';
+import {Match} from './domain/match';
+import {AgeFilter, CompatibilityFilter, HasImageFilter, HeightFilter, IsFavouriteFilter, IsInContactFilter, DistanceInKmFilter} from './domain/filters';
+import {MatchService} from './services/matchservice';
 import {animate, state, style, transition, trigger} from '@angular/animations';
+import {HasImageStrategy, IsFavouriteStrategy, IsInContactStrategy, NumberBetweenBoundsStrategy} from './domain/strategies';
 
 export class FilteredMatch implements Match {
     constructor(public display_name?, public age?, public favourite?, public height_in_cm?, public job_title?, public religion?) {}
-}
-
-@Component({
-    templateUrl: './filter.component.html',
-    styleUrls: ['./filter.component.css'],
-})
-export class FilterInputComponent {
-
 }
 
 @Component({
@@ -48,9 +42,17 @@ export class FilterComponent implements OnInit {
 
     matchCols: any[];
 
-    ageRangeValues: number[] = [0, 100];
-    heightRangeValues: number[] = [120, 200];
-    compatibilityRangeValues: number[] = [0, 1];
+    hasImageValue: any;
+    isInContactValue: any;
+    isFavouriteValue: any;
+    ageRangeValues: number[] = [18, 95];
+    ageCheckValue: any;
+    heightRangeValues: number[] = [135, 210];
+    heightCheckValue: any;
+    compatibilityRangeValues: number[] = [1, 99];
+    compatibilityCheckValue: any;
+    distRangeValue = 30;
+    distanceCheckValue: any;
 
     constructor(private matchService: MatchService) { }
 
@@ -63,5 +65,53 @@ export class FilterComponent implements OnInit {
             { field: 'age', header: 'Age' },
             { field: 'height_in_cm', header: 'Height' }
         ];
+    }
+    handleApplyFilters() {
+        const allFilters = [];
+        let buff = '[';
+        if (this.hasImageValue) {
+            const hasImageStrategy = new HasImageStrategy(
+                'HasImageStrategy', 'StringStrategy', this.hasImageValue);
+            allFilters.push(new HasImageFilter('photo', hasImageStrategy));
+            buff = buff.concat('{ hasImageValue:', this.hasImageValue, ' },');
+        }
+        if (this.isInContactValue) {
+            const isInContactStrategy = new IsInContactStrategy(
+                'IsInContactStrategy', 'NumericStrategy', this.isInContactValue);
+            allFilters.push(new IsInContactFilter('contact', isInContactStrategy));
+            buff = buff.concat('{ isInContactValue:', this.isInContactValue, ' },');
+        }
+        if (this.isFavouriteValue) {
+            const isFavouriteStrategy = new IsFavouriteStrategy(
+                'IsFavouriteStrategy', 'BooleanStrategy', this.isFavouriteValue);
+            allFilters.push(new IsFavouriteFilter('favourite', isFavouriteStrategy));
+            buff = buff.concat('{ isFavouriteValue:', this.isFavouriteValue, ' },');
+        }
+        if (this.compatibilityCheckValue) {
+            const compatibilityBetweenBoundsStrategy = new NumberBetweenBoundsStrategy(
+                'NumberBetweenBoundsStrategy', 'NumericStrategy', this.compatibilityRangeValues[0], this.compatibilityRangeValues[1]);
+            allFilters.push(new CompatibilityFilter('compatibility', compatibilityBetweenBoundsStrategy));
+            buff = buff.concat('{ compatibilityCheckValue:', this.compatibilityCheckValue, ' },');
+        }
+        if (this.ageCheckValue) {
+            const ageBetweenBoundsStrategy = new NumberBetweenBoundsStrategy(
+                'NumberBetweenBoundsStrategy', 'NumericStrategy', this.ageRangeValues[0], this.ageRangeValues[1]);
+            allFilters.push(new AgeFilter('height', ageBetweenBoundsStrategy));
+            buff = buff.concat('{ ageCheckValue:', this.ageCheckValue, ' },');
+        }
+        if (this.heightCheckValue) {
+            const heightBetweenBoundsStrategy = new NumberBetweenBoundsStrategy(
+                'NumberBetweenBoundsStrategy', 'NumericStrategy', this.heightRangeValues[0], this.heightRangeValues[1]);
+            allFilters.push(new HeightFilter('height', heightBetweenBoundsStrategy));
+            buff = buff.concat('{ heightCheckValue:', this.heightCheckValue, ' },');
+        }
+        if (this.distanceCheckValue) {
+            const distanceBetweenBoundsStrategy = new NumberBetweenBoundsStrategy(
+                'NumberBetweenBoundsStrategy', 'NumericStrategy', this.distRangeValue, 300);
+            allFilters.push(new DistanceInKmFilter('height', distanceBetweenBoundsStrategy));
+            buff = buff.concat('{ distanceCheckValue:', this.distanceCheckValue, ' },');
+        }
+        // alert(buff);
+        this.matches = this.matchService.getFilteredMatches(allFilters);
     }
 }

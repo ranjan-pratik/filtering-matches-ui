@@ -1,41 +1,82 @@
 <p-panel header="Add Filters" [toggleable]="true" [style]="{'margin-bottom':'20px'}" [collapsed]="false">
-    Content
+    Available Filters
     <div class="ui-g">
-        <div class="ui-g-6">
-            <div class="ui-g-12">
-                <div class="ui-g-4">
-                    Age Range [ {{ageRangeValues[0] + ' - ' + ageRangeValues[1]}} ]
-                </div>
-                <div class="ui-g-8">
-                    <p-slider [(ngModel)]="ageRangeValues" [range]="true" [min]="0" [max]="100" ></p-slider>
+        <div class="ui-g-4">
+            <div class="ui-g-12 match-left-pad">
+                <div class="ui-g-12">
+                    <p-triStateCheckbox [(ngModel)]="hasImageValue" label=": Has Image ?"></p-triStateCheckbox>
                 </div>
             </div>
-            <div class="ui-g-12">
-                <div class="ui-g-4">
-                    Height Range [ {{heightRangeValues[0] + ' - ' + heightRangeValues[1]}} ]
-                </div>
-                <div class="ui-g-8">
-                    <p-slider [(ngModel)]="heightRangeValues" [range]="true" [min]="120" [max]="200"></p-slider>
+            <div class="ui-g-12 match-left-pad">
+                <div class="ui-g-12">
+                    <p-triStateCheckbox [(ngModel)]="isInContactValue" label=": In Contact ?"></p-triStateCheckbox>
                 </div>
             </div>
-            <div class="ui-g-12">
-                <div class="ui-g-4">
-                    Compatibility Score [ {{compatibilityRangeValues[0] + ' - ' + compatibilityRangeValues[1]}} ]
-                </div>
-                <div class="ui-g-8">
-                    <p-slider [(ngModel)]="compatibilityRangeValues" [step]=".01" [range]="true" [min]="0" [max]="1"></p-slider>
+            <div class="ui-g-12 match-left-pad">
+                <div class="ui-g-12">
+                    <p-triStateCheckbox [(ngModel)]="isFavouriteValue" label=": Is Favourite ?"></p-triStateCheckbox>
                 </div>
             </div>
         </div>
-        <div class="ui-g-6">
-            <div class="ui-g-12">
-                <button pButton type="button" label="New" icon="fa-plus" style="margin-right:10px"></button>
+        <div class="ui-g-8">
+            <div class="ui-g-12 match-right-pad">
+                <div class="ui-g-4">
+                    <p-checkbox [(ngModel)]="compatibilityCheckValue" [binary]="true" label="Compatibility Score (%)" class="ui-g-4 match-right-text"></p-checkbox>
+                </div>
+                <div class="ui-g-8">
+                    <div>
+                        <p-slider [(ngModel)]="compatibilityRangeValues" [step]=".1" [range]="true" [min]="1" [max]="99" [disabled] = "!compatibilityCheckValue"></p-slider>
+                    </div>
+                    <div styleClass="col-button" class="match-center-text">
+                        [ {{compatibilityRangeValues[0] + ' - ' + compatibilityRangeValues[1]}} ]
+                    </div>
+                </div>
             </div>
-            <div class="ui-g-12">
-                <button pButton type="button" label="Open" icon="fa-folder-open"></button>
+            <div class="ui-g-12 match-right-pad">
+                <div class="ui-g-4">
+                    <p-checkbox [(ngModel)]="ageCheckValue" [binary]="true" label="Age (in years)" class="ui-g-4 match-right-text"></p-checkbox>
+                </div>
+                <div class="ui-g-8">
+                    <div>
+                        <p-slider [(ngModel)]="ageRangeValues" [range]="true" [min]="18" [max]="95" [disabled] = "!ageCheckValue" ></p-slider>
+                    </div>
+                    <div styleClass="col-button" class="match-center-text">
+                        [ {{ageRangeValues[0] + ' - ' + ageRangeValues[1]}} ]
+                    </div>
+                </div>
             </div>
+            <div class="ui-g-12 match-right-pad">
+                <div class="ui-g-4">
+                    <p-checkbox [(ngModel)]="heightCheckValue" [binary]="true" label="Height (in cm)" class="ui-g-4 match-right-text"></p-checkbox>
+                </div>
+                <div class="ui-g-8">
+                    <div>
+                        <p-slider [(ngModel)]="heightRangeValues" [range]="true" [min]="135" [max]="210" [disabled] = "!heightCheckValue" [animate]="true" class="match-slider-custom"></p-slider>
+                    </div>
+                    <div styleClass="col-button" class="match-center-text">
+                        [ {{heightRangeValues[0] + ' - ' + heightRangeValues[1]}} ]
+                    </div>
+                </div>
+            </div>
+            <div class="ui-g-12 match-right-pad">
+                <div class="ui-g-4">
+                    <p-checkbox [(ngModel)]="distanceCheckValue" [binary]="true" label="Distance (in km)" class="ui-g-4 match-right-text"></p-checkbox>
+                </div>
+                <div class="ui-g-8">
+                    <div>
+                        <p-slider [(ngModel)]="distRangeValue" [min]="30" [max]="300" [disabled] = "!distanceCheckValue" class="match-slider-custom"></p-slider>
+                    </div>
+                    <div styleClass="col-button" class="match-center-text">
+                        [ {{distRangeValue}} ]
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui-g-12 match-center-text">
+            <button pButton type="button" label="Apply" (click)="handleApplyFilters($event)"class="ui-button-raised ui-button-rounded"></button>
         </div>
     </div>
+
 </p-panel>
 <p-table [columns]="matchCols" [value]="matches" dataKey="display_name" [paginator]="true" rows="10">
     <ng-template pTemplate="header" let-columns class="ui-g-4">
