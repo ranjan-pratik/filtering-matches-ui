@@ -4,16 +4,27 @@ export interface Strategy {
 }
 
 export class NumberBetweenBoundsStrategy implements Strategy {
-    constructor(public name: String, public type: String, public lowerBound: number, public upperBound: number ) {
-    }
+    name: String = 'NumberBetweenBoundsStrategy';
+    type: String = 'numberBetweenBounds';
+    constructor(public lowerBound: number, public upperBound: number ) {}
 }
-export class HasImageStrategy {
-    constructor(public name: String, public type: String, public hasImageValue: Boolean) {
-    }
+export class StringIsNotNullStrategy {
+    name: String = 'StringIsNotNullStrategy';
+    type: String = 'isNotNull';
+    constructor(public hasImageValue: Boolean) {}
 }
-export class IsInContactStrategy implements Strategy {
-    constructor(public name: String, public type: String, public isInContact: Boolean) {}
+export class PositiveNumberStrategy implements Strategy {
+    name: String = 'PositiveNumberStrategy';
+    type: String = 'positiveNumber';
+    constructor(public isInContact: Boolean) {}
 }
-export class IsFavouriteStrategy implements Strategy {
-    constructor(public name: String, public type: String, public isFavourite: Boolean) {}
+export class IsTrueStrategy implements Strategy {
+    name: String = 'IsTrueStrategy';
+    type: String = 'isTrue';
+    constructor(public isFavourite: Boolean) {}
+}
+export class IsFalseStrategy implements Strategy {
+    name: String = 'IsFalseStrategy';
+    type: String = 'isFalse';
+    constructor(public isFavourite: Boolean) {}
 }

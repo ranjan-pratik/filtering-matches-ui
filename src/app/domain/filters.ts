@@ -1,31 +1,35 @@
 import {NumberBetweenBoundsStrategy, Strategy} from './strategies';
 
 export interface Filter {
-    field?;
+    type?;
     strategy: Strategy;
 }
 
 export class AgeFilter implements Filter {
-    constructor(public field: String, public strategy: Strategy) {}
+    type: String = 'age';
+    constructor(public strategy: Strategy) {}
 }
 export class HeightFilter implements Filter {
-    constructor(public field: String, public strategy: Strategy) {}
+    type: String = 'height';
+    constructor(public strategy: Strategy) {}
 }
 export class CompatibilityFilter implements Filter {
-    constructor(public field: String, public strategy: Strategy) {}
-}
-export class DistanceRangeFilter implements Filter {
-    constructor(public field: String, public strategy: Strategy) {}
+    type: String = 'compatibility';
+    constructor(public strategy: Strategy) {}
 }
 export class HasImageFilter implements Filter {
-    constructor(public field: String, public strategy: Strategy) {}
+    type: String = 'hasImage';
+    constructor(public strategy: Strategy) {}
 }
 export class IsInContactFilter implements Filter {
-    constructor(public field: String, public strategy: Strategy) {}
+    type: String = 'isInContact';
+    constructor(public strategy: Strategy) {}
 }
 export class IsFavouriteFilter implements Filter {
-    constructor(public field: String, public strategy: Strategy) {}
+    type: String = 'isFavourite';
+    constructor(public strategy: Strategy) {}
 }
 export class DistanceInKmFilter implements Filter {
-    constructor(public field: String, public strategy: Strategy) {}
+    type: String = 'distanceInKm';
+    constructor(public strategy: Strategy) {}
 }

@@ -73,12 +73,15 @@
             </div>
         </div>
         <div class="ui-g-12 match-center-text">
-            <button pButton type="button" label="Apply" (click)="handleApplyFilters($event)"class="ui-button-raised ui-button-rounded"></button>
+            <button pButton type="button" label="Apply All" (click)="handleApplyFilters($event)"class="ui-button-raised ui-button-rounded"></button>
+|
+            <button pButton type="button" label="Clear All" (click)="handleClearFilters($event)"class="ui-button-raised ui-button-rounded"></button>
+
         </div>
     </div>
 
 </p-panel>
-<p-table [columns]="matchCols" [value]="matches" dataKey="display_name" [paginator]="true" rows="10">
+<p-table [columns]="matchCols" [value]="matches" dataKey="display_name" [paginator]="true" rows="15">
     <ng-template pTemplate="header" let-columns class="ui-g-4">
         <tr>
             <th style="width: 3em"></th>

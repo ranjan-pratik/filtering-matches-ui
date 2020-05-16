@@ -3,7 +3,7 @@ import {Match} from './domain/match';
 import {AgeFilter, CompatibilityFilter, HasImageFilter, HeightFilter, IsFavouriteFilter, IsInContactFilter, DistanceInKmFilter} from './domain/filters';
 import {MatchService} from './services/matchservice';
 import {animate, state, style, transition, trigger} from '@angular/animations';
-import {HasImageStrategy, IsFavouriteStrategy, IsInContactStrategy, NumberBetweenBoundsStrategy} from './domain/strategies';
+import {StringIsNotNullStrategy, PositiveNumberStrategy, IsTrueStrategy, NumberBetweenBoundsStrategy} from './domain/strategies';
 
 export class FilteredMatch implements Match {
     constructor(public display_name?, public age?, public favourite?, public height_in_cm?, public job_title?, public religion?) {}
@@ -59,6 +59,7 @@ export class FilterComponent implements OnInit {
     ngOnInit() {
 
         this.matchService.getMatches().then(matches => this.matches = matches);
+        console.log(this.matches);
 
         this.matchCols = [
             { field: 'display_name', header: 'Name' },
@@ -67,51 +68,90 @@ export class FilterComponent implements OnInit {
         ];
     }
     handleApplyFilters() {
+        this.matches = [];
         const allFilters = [];
         let buff = '[';
         if (this.hasImageValue) {
-            const hasImageStrategy = new HasImageStrategy(
-                'HasImageStrategy', 'StringStrategy', this.hasImageValue);
-            allFilters.push(new HasImageFilter('photo', hasImageStrategy));
+            const hasImageStrategy = new StringIsNotNullStrategy(
+                 this.hasImageValue);
+            allFilters.push(new HasImageFilter(hasImageStrategy));
+            buff = buff.concat('{ hasImageValue:', this.hasImageValue, ' },');
+        }
+        if (this.hasImageValue != null && !this.hasImageValue) {
+            alert ('not case');
+            const hasImageStrategy = new StringIsNotNullStrategy(
+                this.hasImageValue);
+            // allFilters.push(new HasImageFilter(hasImageStrategy));
             buff = buff.concat('{ hasImageValue:', this.hasImageValue, ' },');
         }
         if (this.isInContactValue) {
-            const isInContactStrategy = new IsInContactStrategy(
-                'IsInContactStrategy', 'NumericStrategy', this.isInContactValue);
-            allFilters.push(new IsInContactFilter('contact', isInContactStrategy));
+            const isInContactStrategy = new PositiveNumberStrategy(
+                 this.isInContactValue);
+            allFilters.push(new IsInContactFilter( isInContactStrategy));
+            buff = buff.concat('{ isInContactValue:', this.isInContactValue, ' },');
+        }
+        if (this.isInContactValue != null && !this.isInContactValue) {
+            alert ('not case');
+            const isInContactStrategy = new PositiveNumberStrategy(
+                this.isInContactValue);
+            //allFilters.push(new IsInContactFilter( isInContactStrategy));
             buff = buff.concat('{ isInContactValue:', this.isInContactValue, ' },');
         }
         if (this.isFavouriteValue) {
-            const isFavouriteStrategy = new IsFavouriteStrategy(
-                'IsFavouriteStrategy', 'BooleanStrategy', this.isFavouriteValue);
-            allFilters.push(new IsFavouriteFilter('favourite', isFavouriteStrategy));
+            const isFavouriteStrategy = new IsTrueStrategy(
+                 this.isFavouriteValue);
+            allFilters.push(new IsFavouriteFilter( isFavouriteStrategy));
+            buff = buff.concat('{ isFavouriteValue:', this.isFavouriteValue, ' },');
+        }
+        if (this.isFavouriteValue != null && !this.isFavouriteValue) {
+            alert ('not case');
+            const isFavouriteStrategy = new IsTrueStrategy(
+                this.isFavouriteValue);
+            //allFilters.push(new IsFavouriteFilter( isFavouriteStrategy));
             buff = buff.concat('{ isFavouriteValue:', this.isFavouriteValue, ' },');
         }
         if (this.compatibilityCheckValue) {
             const compatibilityBetweenBoundsStrategy = new NumberBetweenBoundsStrategy(
-                'NumberBetweenBoundsStrategy', 'NumericStrategy', this.compatibilityRangeValues[0], this.compatibilityRangeValues[1]);
-            allFilters.push(new CompatibilityFilter('compatibility', compatibilityBetweenBoundsStrategy));
+                 this.compatibilityRangeValues[0], this.compatibilityRangeValues[1]);
+            allFilters.push(new CompatibilityFilter(compatibilityBetweenBoundsStrategy));
             buff = buff.concat('{ compatibilityCheckValue:', this.compatibilityCheckValue, ' },');
         }
         if (this.ageCheckValue) {
             const ageBetweenBoundsStrategy = new NumberBetweenBoundsStrategy(
-                'NumberBetweenBoundsStrategy', 'NumericStrategy', this.ageRangeValues[0], this.ageRangeValues[1]);
-            allFilters.push(new AgeFilter('height', ageBetweenBoundsStrategy));
+                this.ageRangeValues[0], this.ageRangeValues[1]);
+            allFilters.push(new AgeFilter(ageBetweenBoundsStrategy));
             buff = buff.concat('{ ageCheckValue:', this.ageCheckValue, ' },');
         }
         if (this.heightCheckValue) {
             const heightBetweenBoundsStrategy = new NumberBetweenBoundsStrategy(
-                'NumberBetweenBoundsStrategy', 'NumericStrategy', this.heightRangeValues[0], this.heightRangeValues[1]);
-            allFilters.push(new HeightFilter('height', heightBetweenBoundsStrategy));
+                 this.heightRangeValues[0], this.heightRangeValues[1]);
+            allFilters.push(new HeightFilter(heightBetweenBoundsStrategy));
             buff = buff.concat('{ heightCheckValue:', this.heightCheckValue, ' },');
         }
         if (this.distanceCheckValue) {
             const distanceBetweenBoundsStrategy = new NumberBetweenBoundsStrategy(
-                'NumberBetweenBoundsStrategy', 'NumericStrategy', this.distRangeValue, 300);
-            allFilters.push(new DistanceInKmFilter('height', distanceBetweenBoundsStrategy));
+                this.distRangeValue, 300);
+            allFilters.push(new DistanceInKmFilter(distanceBetweenBoundsStrategy));
             buff = buff.concat('{ distanceCheckValue:', this.distanceCheckValue, ' },');
         }
         // alert(buff);
-        this.matches = this.matchService.getFilteredMatches(allFilters);
+        this.matchService.getFilteredMatches(allFilters).then(matches => this.matches = matches);
+        console.log('return values :' + this.matches);
+       //  this.matches = results.slice();
+
+    }
+    handleClearFilters() {
+        this.hasImageValue = null;
+        this.isInContactValue = null;
+        this.isFavouriteValue = null;
+        this.ageRangeValues = [18, 95];
+        this.ageCheckValue = false;
+        this.heightRangeValues = [135, 210];
+        this.heightCheckValue = false;
+        this.compatibilityRangeValues = [1, 99];
+        this.compatibilityCheckValue = false;
+        this.distRangeValue = 30;
+        this.distanceCheckValue = false;
+        this.matchService.getFilteredMatches([]).then(matches => this.matches = matches);
     }
 }

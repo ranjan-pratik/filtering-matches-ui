@@ -3,31 +3,31 @@ import {HttpClient} from '@angular/common/http';
 import {Match} from '../domain/match';
 import {Filter} from '../domain/filters';
 
+export class AllFiltersVO  {
+    constructor(public appliedFilters: Filter[]) {}
+}
+
 @Injectable()
 export class MatchService {
 
     constructor(private http: HttpClient) {}
 
-    filteredMatches: Match[];
-
     getMatches() {
-        return this.http.get<any>('assets/data/matches.json')
+        return this.http.get<any>('http://localhost:8081/MatchFilter/filters/allMatches')
             .toPromise()
             .then(res => <Match[]> res.matches)
             .then(data => data);
     }
 
     getFilteredMatches(listOfFilters: Filter[]) {
-        const headers = { 'Authorization': 'Bearer my-token', 'My-Custom-Header': 'foobar' };
-        const myJsonString = JSON.stringify(listOfFilters);
-        console.log(listOfFilters);
+        const headers = { 'Content-Type': 'application/json' };
+        const myJsonString =  JSON.stringify(new AllFiltersVO(listOfFilters));
+        console.log(new AllFiltersVO(listOfFilters));
         console.log(myJsonString);
-        alert(myJsonString);
-        this.http.post<any>('assets/data/matches.json',
+        return this.http.post<any>('http://localhost:8081/MatchFilter/filters/filteredMatches',
             myJsonString, { headers })
-            .subscribe(data =>  this.filteredMatches = data.matches,
-                error => console.error('There was an error!', error)
-            );
-        return this.filteredMatches;
+            .toPromise()
+            .then(res => <Match[]> res.matches)
+            .then(data => data);
     }
 }
