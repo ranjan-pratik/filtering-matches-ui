@@ -1,6 +1,6 @@
 # filtering-matches-ui
 
-### **Introduction : **
+### **Introduction :**
 			A stand-alone UI to enable users filter matches based on some pre-configured filters
 
 ### **Dependency :**
