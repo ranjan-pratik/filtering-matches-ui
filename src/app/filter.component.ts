@@ -60,7 +60,7 @@ export class FilterComponent implements OnInit {
             { field: 'height_in_cm', header: 'Height (cm)' },
             { field: 'compatibility_score', header: 'Compatibility (%)' },
             { field: 'favourite', header: 'Is Favourite' },
-            { field: 'city.name', header: 'City' }
+            { field: 'city', subfield: 'name', header: 'City' }
         ];
     }
     handleApplyFilters() {
