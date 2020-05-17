@@ -15,7 +15,9 @@ export class MatchService {
     getMatches() {
         return this.http.get<any>('http://localhost:8081/MatchFilter/filters/allMatches')
             .toPromise()
-            .then(res => <Match[]> res.matches)
+            .then(
+				res => <Match[]> res.matches,
+			)
             .then(data => data);
     }
 

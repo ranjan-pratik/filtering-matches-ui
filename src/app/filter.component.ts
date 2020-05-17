@@ -58,12 +58,12 @@ export class FilterComponent implements OnInit {
             { field: 'display_name', header: 'Name' },
             { field: 'age', header: 'Age (years)' },
             { field: 'height_in_cm', header: 'Height (cm)' },
-            { field: 'compatibility_score', header: 'Compatibility (%)' },
+            { field: 'compatibility_score', percentMode: 'true', header: 'Compatibility (%)' },
             { field: 'favourite', header: 'Is Favourite' },
             { field: 'city', subfield: 'name', header: 'City' }
         ];
     }
-    handleApplyFilters() {
+    handleApplyFilters(event: any) {
         this.matches = [];
         const allFilters = [];
         if (this.hasImageValue) {
@@ -127,7 +127,7 @@ export class FilterComponent implements OnInit {
         }
         return 0;
     }
-    handleClearFilters() {
+    handleClearFilters(event: any) {
         this.hasImageValue = null;
         this.isInContactValue = null;
         this.isFavouriteValue = null;
