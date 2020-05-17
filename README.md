@@ -1,12 +1,12 @@
 # filtering-matches-ui
 
-###**Introduction : **
+### **Introduction : **
 			A stand-alone UI to enable users filter matches based on some pre-configured filters
 
-###**Dependency :**
+### **Dependency :**
 			A pre-configured Node Server
 			
-###**Run Instructions :**
+### **Run Instructions :**
 			1. Download the source-code from the master branch
 			2. Move the downloaded package to a target folder
 			3. Start your CLI on the target folder with Node path
