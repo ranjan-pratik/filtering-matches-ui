@@ -11,6 +11,7 @@ import {PanelModule} from 'primeng/panel';
 import {SliderModule} from 'primeng/slider';
 import {TriStateCheckboxModule} from 'primeng/tristatecheckbox';
 import {CheckboxModule} from 'primeng/checkbox';
+import {OverlayPanelModule} from 'primeng/overlaypanel';
 
 import {FilterComponent} from './filter.component';
 
@@ -31,7 +32,8 @@ import {FilterComponent} from './filter.component';
         PanelModule,
         SliderModule,
         TriStateCheckboxModule,
-        CheckboxModule
+        CheckboxModule,
+		OverlayPanelModule
     ],
     providers: [],
     bootstrap: [FilterComponent]
