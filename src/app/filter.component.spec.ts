@@ -117,7 +117,7 @@ describe('FilterComponent', () => {
         spyOn(service, 'getFilteredMatches').and.returnValue(Promise.resolve(mockMatches));
         component.hasImageValue = 'some value';
         component.distanceCheckValue = true;
-        component.handleClearFilters();
+        component.handleClearFilters(null);
         fixture.detectChanges();
         expect(component.hasImageValue).toEqual(null);
         expect(component.distanceCheckValue).toEqual(false);
@@ -127,6 +127,6 @@ describe('FilterComponent', () => {
     it('should send filters', async(() => {
         const fixture = TestBed.createComponent(FilterComponent);
         const app = fixture.debugElement.componentInstance;
-        expect(app.handleApplyFilters());
+        expect(app.handleApplyFilters(null));
     }));
 });
