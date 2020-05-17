@@ -1,4 +1,8 @@
-<p-panel header="Add Filters" [toggleable]="true" [style]="{'margin-bottom':'20px'}" [collapsed]="false">
+<p-panel header="Matches" [style]="{'margin-bottom':'20px'}" [collapsed]="true">
+
+</p-panel>
+
+<p-panel header="Add Filters" [toggleable]="true" [style]="{'margin-bottom':'20px'}" [collapsed]="true">
     Available Filters
     <div class="ui-g">
         <div class="ui-g-4">
@@ -81,7 +85,7 @@
     </div>
 
 </p-panel>
-<p-table [columns]="matchCols" [value]="matches" dataKey="display_name" [paginator]="true" rows="15">
+<p-table [columns]="matchCols" [value]="matches" dataKey="match_id" [paginator]="true" rows="15">
     <ng-template pTemplate="header" let-columns class="ui-g-4">
         <tr>
             <th style="width: 3em"></th>
@@ -106,16 +110,13 @@
         <tr>
             <td [attr.colspan]="columns.length + 1">
                 <div class="ui-g ui-fluid" style="font-size:16px;padding:20px">
-                    <div class="ui-g-12 ui-md-3 shadow-box ui-shadow-1" style="text-align:center">
+                    <div class="ui-g-12 ui-md-6 shadow-box ui-shadow-1" style="text-align:center">
                         <img [attr.alt]="rowData.main_photo" src="{{rowData.main_photo}}">
                     </div>
-                    <div class="ui-g-12 ui-md-9">
+                    <div class="ui-g-12 ui-md-6">
                         <div class="ui-g">
                             <div class="ui-g-12">
                                 <b>Name:</b> {{rowData.display_name}}
-                            </div>
-                            <div class="ui-g-12">
-                                <b>Age:</b> {{rowData.age}}
                             </div>
                             <div class="ui-g-12">
                                 <b>Job:</b> {{rowData.job_title}}
@@ -124,7 +125,10 @@
                                 <b>Religion:</b> {{rowData.religion}}
                             </div>
                             <div class="ui-g-12">
-                                <b>Is Favourite:</b> {{rowData.favourite}}
+                                <b>Contacts Exchanged:</b> {{rowData.contacts_exchanged}}
+                            </div>
+                            <div class="ui-g-12">
+                                <b>City :</b> {{rowData.city.name}}
                             </div>
                         </div>
                     </div>

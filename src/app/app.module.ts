@@ -12,14 +12,11 @@ import {SliderModule} from 'primeng/slider';
 import {TriStateCheckboxModule} from 'primeng/tristatecheckbox';
 import {CheckboxModule} from 'primeng/checkbox';
 
-import {AppComponent} from './app.component';
-
 import {FilterComponent} from './filter.component';
 
 
 @NgModule({
     declarations: [
-        AppComponent,
         FilterComponent
     ],
     imports: [
@@ -37,7 +34,7 @@ import {FilterComponent} from './filter.component';
         CheckboxModule
     ],
     providers: [],
-    bootstrap: [AppComponent, FilterComponent]
+    bootstrap: [FilterComponent]
 })
 export class AppModule { }
 

@@ -29,7 +29,12 @@ export class IsFavouriteFilter implements Filter {
     type: String = 'isFavourite';
     constructor(public strategy: Strategy) {}
 }
-export class DistanceInKmFilter implements Filter {
-    type: String = 'distanceInKm';
+export class DistanceRangeInKmFilter implements Filter {
+    type: String = 'distanceRangeInKm';
     constructor(public strategy: Strategy) {}
+}
+export class NotFilter implements Filter {
+    type: String = 'not';
+    strategy: Strategy = null;
+    constructor(public candidate: Filter) {}
 }

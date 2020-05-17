@@ -1,13 +1,16 @@
 import {Component, OnInit} from '@angular/core';
-import {Match} from './domain/match';
-import {AgeFilter, CompatibilityFilter, HasImageFilter, HeightFilter, IsFavouriteFilter, IsInContactFilter, DistanceInKmFilter} from './domain/filters';
+import {Match, City} from './domain/match';
+import {AgeFilter, CompatibilityFilter, HasImageFilter, HeightFilter, IsFavouriteFilter, IsInContactFilter, DistanceRangeInKmFilter} from './domain/filters';
 import {MatchService} from './services/matchservice';
 import {animate, state, style, transition, trigger} from '@angular/animations';
-import {StringIsNotNullStrategy, PositiveNumberStrategy, IsTrueStrategy, NumberBetweenBoundsStrategy} from './domain/strategies';
-
-export class FilteredMatch implements Match {
-    constructor(public display_name?, public age?, public favourite?, public height_in_cm?, public job_title?, public religion?) {}
-}
+import {
+    StringIsNotNullStrategy,
+    PositiveNumberStrategy,
+    IsTrueOrFalseStrategy,
+    NumberBetweenBoundsStrategy,
+    NumberEqualToStrategy,
+    DistanceWithinRangeStrategy
+} from './domain/strategies';
 
 @Component({
     selector: 'app-root',
@@ -29,19 +32,9 @@ export class FilteredMatch implements Match {
     ]
 })
 export class FilterComponent implements OnInit {
-
-    displayDialog: boolean;
-
-    match: Match = new FilteredMatch();
-
-    selectedMatch: Match;
-
-    newMatch: boolean;
-
+    title = 'Matches';
     matches: Match[];
-
     matchCols: any[];
-
     hasImageValue: any;
     isInContactValue: any;
     isFavouriteValue: any;
@@ -63,82 +56,76 @@ export class FilterComponent implements OnInit {
 
         this.matchCols = [
             { field: 'display_name', header: 'Name' },
-            { field: 'age', header: 'Age' },
-            { field: 'height_in_cm', header: 'Height' }
+            { field: 'age', header: 'Age (years)' },
+            { field: 'height_in_cm', header: 'Height (cm)' },
+            { field: 'compatibility_score', header: 'Compatibility (%)' },
+            { field: 'favourite', header: 'Is Favourite' },
+            { field: 'city.name', header: 'City' }
         ];
     }
     handleApplyFilters() {
         this.matches = [];
         const allFilters = [];
-        let buff = '[';
         if (this.hasImageValue) {
-            const hasImageStrategy = new StringIsNotNullStrategy(
-                 this.hasImageValue);
+            const hasImageStrategy = new StringIsNotNullStrategy();
             allFilters.push(new HasImageFilter(hasImageStrategy));
-            buff = buff.concat('{ hasImageValue:', this.hasImageValue, ' },');
         }
         if (this.hasImageValue != null && !this.hasImageValue) {
-            alert ('not case');
-            const hasImageStrategy = new StringIsNotNullStrategy(
-                this.hasImageValue);
-            // allFilters.push(new HasImageFilter(hasImageStrategy));
-            buff = buff.concat('{ hasImageValue:', this.hasImageValue, ' },');
+            const hasImageStrategy = new StringIsNotNullStrategy();
+            const hasImageFilter = new HasImageFilter(hasImageStrategy);
+            alert('does not have image not implemented.');
+            // allFilters.push(new NotFilter(hasImageFilter));
         }
         if (this.isInContactValue) {
-            const isInContactStrategy = new PositiveNumberStrategy(
-                 this.isInContactValue);
+            const isInContactStrategy = new PositiveNumberStrategy();
             allFilters.push(new IsInContactFilter( isInContactStrategy));
-            buff = buff.concat('{ isInContactValue:', this.isInContactValue, ' },');
         }
         if (this.isInContactValue != null && !this.isInContactValue) {
-            alert ('not case');
-            const isInContactStrategy = new PositiveNumberStrategy(
-                this.isInContactValue);
-            //allFilters.push(new IsInContactFilter( isInContactStrategy));
-            buff = buff.concat('{ isInContactValue:', this.isInContactValue, ' },');
+            const isNotContactStrategy = new NumberEqualToStrategy(0);
+            allFilters.push( new IsInContactFilter(isNotContactStrategy));
         }
         if (this.isFavouriteValue) {
-            const isFavouriteStrategy = new IsTrueStrategy(
+            const isFavouriteStrategy = new IsTrueOrFalseStrategy(
                  this.isFavouriteValue);
             allFilters.push(new IsFavouriteFilter( isFavouriteStrategy));
-            buff = buff.concat('{ isFavouriteValue:', this.isFavouriteValue, ' },');
         }
         if (this.isFavouriteValue != null && !this.isFavouriteValue) {
-            alert ('not case');
-            const isFavouriteStrategy = new IsTrueStrategy(
+            const isNotFavouriteStrategy = new IsTrueOrFalseStrategy(
                 this.isFavouriteValue);
-            //allFilters.push(new IsFavouriteFilter( isFavouriteStrategy));
-            buff = buff.concat('{ isFavouriteValue:', this.isFavouriteValue, ' },');
+            allFilters.push(new IsFavouriteFilter(isNotFavouriteStrategy));
         }
         if (this.compatibilityCheckValue) {
             const compatibilityBetweenBoundsStrategy = new NumberBetweenBoundsStrategy(
-                 this.compatibilityRangeValues[0], this.compatibilityRangeValues[1]);
+                this.safeConvertNumberToDecimalFraction(this.compatibilityRangeValues[0]),
+                this.safeConvertNumberToDecimalFraction(this.compatibilityRangeValues[1]));
             allFilters.push(new CompatibilityFilter(compatibilityBetweenBoundsStrategy));
-            buff = buff.concat('{ compatibilityCheckValue:', this.compatibilityCheckValue, ' },');
         }
         if (this.ageCheckValue) {
             const ageBetweenBoundsStrategy = new NumberBetweenBoundsStrategy(
                 this.ageRangeValues[0], this.ageRangeValues[1]);
             allFilters.push(new AgeFilter(ageBetweenBoundsStrategy));
-            buff = buff.concat('{ ageCheckValue:', this.ageCheckValue, ' },');
         }
         if (this.heightCheckValue) {
             const heightBetweenBoundsStrategy = new NumberBetweenBoundsStrategy(
                  this.heightRangeValues[0], this.heightRangeValues[1]);
             allFilters.push(new HeightFilter(heightBetweenBoundsStrategy));
-            buff = buff.concat('{ heightCheckValue:', this.heightCheckValue, ' },');
         }
         if (this.distanceCheckValue) {
-            const distanceBetweenBoundsStrategy = new NumberBetweenBoundsStrategy(
+            const distanceBetweenBoundsStrategy = new DistanceWithinRangeStrategy(53.801277, -1.548567,
                 this.distRangeValue, 300);
-            allFilters.push(new DistanceInKmFilter(distanceBetweenBoundsStrategy));
-            buff = buff.concat('{ distanceCheckValue:', this.distanceCheckValue, ' },');
+            allFilters.push(new DistanceRangeInKmFilter(distanceBetweenBoundsStrategy));
         }
-        // alert(buff);
         this.matchService.getFilteredMatches(allFilters).then(matches => this.matches = matches);
         console.log('return values :' + this.matches);
        //  this.matches = results.slice();
 
+    }
+    safeConvertNumberToDecimalFraction(value: number) {
+        if (value != null) {
+            const decimal = value / 100;
+            return decimal;
+        }
+        return 0;
     }
     handleClearFilters() {
         this.hasImageValue = null;
