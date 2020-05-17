@@ -111,8 +111,8 @@ export class FilterComponent implements OnInit {
             allFilters.push(new HeightFilter(heightBetweenBoundsStrategy));
         }
         if (this.distanceCheckValue) {
-            const distanceBetweenBoundsStrategy = new DistanceWithinRangeStrategy(53.801277, -1.548567,
-                this.distRangeValue, 300);
+            const distanceBetweenBoundsStrategy = new DistanceWithinRangeStrategy(53.801277, -1.548567, 30,
+                this.distRangeValue);
             allFilters.push(new DistanceRangeInKmFilter(distanceBetweenBoundsStrategy));
         }
         this.matchService.getFilteredMatches(allFilters).then(matches => this.matches = matches);
