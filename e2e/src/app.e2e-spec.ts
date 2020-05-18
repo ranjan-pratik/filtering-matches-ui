@@ -1,6 +1,6 @@
 import {AppPage} from './app.po';
 
-describe('primeng-quickstart-cli App', () => {
+describe('filtering-matches-ui App', () => {
   let page: AppPage;
 
   beforeEach(() => {

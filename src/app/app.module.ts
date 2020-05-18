@@ -33,7 +33,7 @@ import {FilterComponent} from './filter.component';
         SliderModule,
         TriStateCheckboxModule,
         CheckboxModule,
-		OverlayPanelModule
+        OverlayPanelModule
     ],
     providers: [],
     bootstrap: [FilterComponent]

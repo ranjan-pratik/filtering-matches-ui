@@ -11,23 +11,17 @@ export class AllFiltersVO  {
 
 @Injectable()
 export class MatchService {
-
-	baseUrlRoot = environment.baseUrlRoot;
-	baseUrlAllMatches = this.baseUrlRoot + '/filters/allMatches';
-	baseUrlFilteredMatches = this.baseUrlRoot + '/filters/filteredMatches';
+    baseUrlRoot = environment.baseUrlRoot;
+    baseUrlAllMatches = this.baseUrlRoot + '/filters/allMatches';
+    baseUrlFilteredMatches = this.baseUrlRoot + '/filters/filteredMatches';
 
     constructor(private http: HttpClient) {}
 
     getMatches() {
         return this.http.get<any>(this.baseUrlAllMatches)
             .toPromise()
-            .then(
-				res => <Match[]> res.matches,
-			)
-            .then(data => data)
-			.catch(function(e) {
-				console.log('Error while making HTTP call. # ' + JSON.stringify(e));
-			});
+            .then(res => <Match[]> res.matches)
+            .then(data => data);
     }
 
     getFilteredMatches(listOfFilters: Filter[]) {
@@ -39,9 +33,6 @@ export class MatchService {
             myJsonString, { headers })
             .toPromise()
             .then(res => <Match[]> res.matches)
-            .then(data => data)
-			.catch(function(e) {
-				console.log('Error while making HTTP call. # ' + JSON.stringify(e));
-			});
+            .then(data => data);
     }
 }
