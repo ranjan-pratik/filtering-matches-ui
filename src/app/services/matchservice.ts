@@ -3,6 +3,8 @@ import {HttpClient} from '@angular/common/http';
 import {Match} from '../domain/match';
 import {Filter} from '../domain/filters';
 
+import { environment } from '../../environments/environment';
+
 export class AllFiltersVO  {
     constructor(public appliedFilters: Filter[]) {}
 }
@@ -10,15 +12,22 @@ export class AllFiltersVO  {
 @Injectable()
 export class MatchService {
 
+	baseUrlRoot = environment.baseUrlRoot;
+	baseUrlAllMatches = this.baseUrlRoot + '/filters/allMatches';
+	baseUrlFilteredMatches = this.baseUrlRoot + '/filters/filteredMatches';
+
     constructor(private http: HttpClient) {}
 
     getMatches() {
-        return this.http.get<any>('http://localhost:8081/MatchFilter/filters/allMatches')
+        return this.http.get<any>(this.baseUrlAllMatches)
             .toPromise()
             .then(
 				res => <Match[]> res.matches,
 			)
-            .then(data => data);
+            .then(data => data)
+			.catch(function(e) {
+				console.log('Error while making HTTP call. # ' + JSON.stringify(e));
+			});
     }
 
     getFilteredMatches(listOfFilters: Filter[]) {
@@ -26,10 +35,13 @@ export class MatchService {
         const myJsonString =  JSON.stringify(new AllFiltersVO(listOfFilters));
         console.log(new AllFiltersVO(listOfFilters));
         console.log(myJsonString);
-        return this.http.post<any>('http://localhost:8081/MatchFilter/filters/filteredMatches',
+        return this.http.post<any>(this.baseUrlFilteredMatches,
             myJsonString, { headers })
             .toPromise()
             .then(res => <Match[]> res.matches)
-            .then(data => data);
+            .then(data => data)
+			.catch(function(e) {
+				console.log('Error while making HTTP call. # ' + JSON.stringify(e));
+			});
     }
 }
