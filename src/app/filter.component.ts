@@ -128,7 +128,7 @@ export class FilterComponent implements OnInit {
         return 0;
     }
     handleClearFilters(event: any) {
-        this.hasImageValue = null;
+        this.hasImageValue = false;
         this.isInContactValue = null;
         this.isFavouriteValue = null;
         this.ageRangeValues = [18, 95];

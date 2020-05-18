@@ -119,7 +119,7 @@ describe('FilterComponent', () => {
         component.distanceCheckValue = true;
         component.handleClearFilters(null);
         fixture.detectChanges();
-        expect(component.hasImageValue).toEqual(null);
+        expect(component.hasImageValue).toEqual(false);
         expect(component.distanceCheckValue).toEqual(false);
         expect(component.matches).toEqual(undefined);
     }));
