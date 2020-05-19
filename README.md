@@ -4,7 +4,7 @@
 			A stand-alone UI to enable users filter matches based on some pre-configured filters
 
 ### **Dependency :**
-			A pre-configured Node Server with NPM package
+			A pre-configured Node Server with NPM package and Angular-CLI
 			
 ### **Run Instructions :**
 		
@@ -12,7 +12,7 @@
 			1. Download the source-code from the master branch
 			2. Move the downloaded package to a desired *project* folder
 			3. Start your CLI on the desired *project* folder with NodeJS on Path
-			4. Test NPM and Node installations by running 'npm -v' and 'ng --version' commands respectively.
+			4. Test Node, NPM and Angular-CLI installations by running 'npm -v' and 'ng --version' commands respectively.
 			5. If new installations are needed follow *References* at the bottom 
 			5. Navigate into the *<<filtering-matches-ui>>* folder
 			6. Run command 'ng serve' (this runs on default port  *4200* .To run on a differen port use 'ng serve --port *<<custom port number>>*') 
