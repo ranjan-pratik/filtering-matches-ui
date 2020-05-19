@@ -22,12 +22,12 @@
 			
 		2. PROD Mode
 			1. Download the package from the *master-branch >> app-root >> dist folder*
-			2. Move the downloaded package to a target folder
-			3. Start your CLI on the target folder with Node path
+			2. Move the downloaded package to a desired *project* folder
+			3. Start your CLI on the desired *project* folder.
 			4. Test Node, NPM and Angular-CLI installations by running 'npm -v' and 'ng --version' commands respectively.
-			5. Run 'npm install http-server -g' to install http-server package if not already installed.
-			5. Navigate into the *dist* folder
-			6. Run 'http-server dist/' (The project runs on default port  *4200*.) 
+			5. Run 'npm install @angular/cli -g' and 'npm install http-server -g' to install angular-cli and http-server package if not already installed.
+			5. Run 'http-server dist/filtering-matches-ui'
+			6. Navihgate to localhost:8080 (The project runs on default port  *8080*.) 
  
 ### **Assumptions**
 			1. No user login feature required
