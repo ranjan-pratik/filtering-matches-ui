@@ -17,7 +17,7 @@
 			5. If new installations are needed follow *References* at the bottom 
 			5. Navigate into the *<<filtering-matches-ui>>* folder
 			6. Run 'npm install' to install the node dependencies.
-			7. Run command 'ng serve' (this runs on default port  *4200* .To run on a differen port use 'ng serve --port *<<custom port number>>*') 
+			7. Run command 'npm start' (this runs on default port  *4200* .To run on a differen port use 'ng serve --port *<<custom port number>>*') 
 			8. Open browser and go to 'localhost:4200'  (or localhost:*<<custom port number>>*)
 			
 		2. PROD Mode
