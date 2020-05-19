@@ -5,6 +5,7 @@
 
 ### **Dependency :**
 			A pre-configured Node Server with NPM package and Angular-CLI
+			An http-server package if running in PROD mode
 			
 ### **Run Instructions :**
 		
@@ -24,8 +25,9 @@
 			2. Move the downloaded package to a target folder
 			3. Start your CLI on the target folder with Node path
 			4. Test Node, NPM and Angular-CLI installations by running 'npm -v' and 'ng --version' commands respectively.
+			5. Run 'npm install http-server -g' to install http-server package if not already installed.
 			5. Navigate into the *dist* folder
-			6. Open the index.html file. (The project runs on default port  *4200*.) 
+			6. Run 'http-server dist/' (The project runs on default port  *4200*.) 
  
 ### **Assumptions**
 			1. No user login feature required
