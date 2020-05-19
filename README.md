@@ -11,6 +11,7 @@
 			
 ### **Run Instructions :**
 		
+
 	1. DEV Mode
 		1. Download the source-code from the master branch
 		2. Move the downloaded package to a desired *project* folder
@@ -23,6 +24,7 @@
 		7. Run command 'npm start' (this runs on default port  *4200* .To run on a differen port use 
 		   'ng serve --port *<<custom port number>>*') 
 		8. Open browser and go to 'localhost:4200' (or localhost:*<<custom port number>>*)
+
 			
 	2. PROD Mode
 		1. Download the package from the *master-branch >> app-root >> dist folder*
